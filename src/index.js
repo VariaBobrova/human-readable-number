@@ -1,39 +1,16 @@
-function toReadable(num) {
-    let str = "";
-    let arrOnes = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 
-    'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-    let arrTens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+module.exports = function toReadable(num) {
+    let arr1 = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 
+                'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];    
+    let arr2 = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
+    let mod = num % 100;   
     let huns = Math.floor(num / 100);
-    let hunMod = num % 100;
-    let tens = Math.floor(hunMod / 10);
-    let ones = hunMod % 10;
-    let decimals;
-    let hundreds;
-    let hunWord;
+    let tens = Math.floor(mod / 10);
+    let ones = mod % 10;
 
-    hundreds = arrOnes[huns];
+    let hundreds = arr1[huns];
+    let dozens = (mod < 20) ? arr1[mod] : arr2[tens] + ' ' + arr1[ones];
+    let word = (num > 0 && num < 100) ? '' : ' hundred ';
 
-    if (hunMod < 20) {
-        decimals = arrOnes[hunMod];
-    } else {
-        decimals = arrTens[tens - 2] + ' ' + arrOnes[ones];
-    }
-
-    if (num < 100) {
-        hunWord = '';
-    } else if (hunMod === 0) {
-        hunWord = ' hundreds ';
-    } else {
-        hunWord = ' hundred ';
-    }
-
-    str = hundreds + hunWord + decimals;
-    return str;
+    return num ? (hundreds + word + dozens).trim() : 'zero';
 }
-
-
-// нейминг переменных
-// множественное число для сотен
-// числа до 100 - убрать hundred
-// zero
